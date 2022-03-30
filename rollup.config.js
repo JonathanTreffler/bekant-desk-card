@@ -12,7 +12,7 @@ const dev = process.env.ROLLUP_WATCH;
 
 export default [
   {
-    input: 'src/linak-desk-card.ts',
+    input: 'src/bekant-desk-card.ts',
     output: {
       dir: 'dist',
       format: 'es',
