@@ -1,12 +1,10 @@
-# LinakDesk Card by [@IhorSyerkov](https://github.com/IhorSyerkov)
+# Bekant Card
 
 [![hacs][hacs-image]][hacs-url]
 
-> [Home Assistant][home-assistant] Lovelace Card for controlling desks based on linak bluetooth controller.
+> [Home Assistant][home-assistant] Lovelace Card for controlling IKEA Bekant desks modified with a [Megadesk](https://github.com/gcormier/megadesk) Controller.
 
-![linak-desk-card_preview](https://user-images.githubusercontent.com/9998984/107797805-a3a6c800-6d5b-11eb-863a-56ae0343995c.png)
-
-Designed to work with https://github.com/j5lien/esphome-idasen-desk-controller
+![bekant-desk-card_preview](https://user-images.githubusercontent.com/9998984/107797805-a3a6c800-6d5b-11eb-863a-56ae0343995c.png)
 
 ## HACS
 
@@ -16,14 +14,12 @@ Just search for `Linak Desk Card` in plugins tab.
 ## Config
 
 ```yaml
-type: 'custom:linak-desk-card'
+type: 'custom:bekant-desk-card'
 name: ''
-desk: cover.desk
-height_sensor: sensor.desk_height
-moving_sensor: binary_sensor.desk_moving
-connection_sensor: binary_sensor.desk_connection
-min_height: 62
-max_height: 127
+desk: number.megadesk_height_cm
+connection_sensor: binary_sensor.megadesk_esp32_status
+min_height: 58
+max_height: 114
 presets:
   - label: Stay
     target: 108
@@ -38,9 +34,7 @@ presets:
 | `type`             | `string`| **Required** | `custom:linak-desk-card`                    |                     |
 | `name`             | `string`| **Optional** | Card name                                   | `` .                |
 | `desk`             | `string`| **Required** | Home Assistant entity ID (cover).           | `none`              |
-| `moving_sensor`    | `string`| **Required** | Home Assistant entity ID (sensor).          | `none`              |
 | `connection_sensor`| `string`| **Required** | Home Assistant entity ID (binary_sensor).   | `none`              |
-| `height_sensor`    | `string`| **Required** | Home Assistant entity ID (binary_sensor).   | `none`              |
 | `max_height`       | `number`| **Required** | Desk height in min position.                | `none`              |
 | `min_height`       | `number`| **Required** | Desk height in max position.                | `none`              |
 | `presets`          | `Array` | **Optional** | Predefined presets                          | `[]`                |
@@ -61,7 +55,7 @@ This card supports translations. Please, help to add more translations and impro
 
 ## Supported models
 
-- Ikea IDÅSEN
+- Ikea Bekant (only if modified with a Megadesk and connected via UART to a esp running the esphome config)
 ## References
 
 * Inspired by https://github.com/macbury/SmartHouse/tree/master/home-assistant/www/custom-lovelace/linak-desk
