@@ -1,7 +1,7 @@
 {
   "common": {
     "version": "Version",
-    "name":"Linak Desk Card",
+    "name":"Bekant Desk Card",
     "description": "Card for controlling table height",
     "invalid_configuration": "Invalid configuration",
     "desk_and_height_required": "Desk and height sensor are required",

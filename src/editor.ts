@@ -9,16 +9,16 @@ import {
   internalProperty,
 } from 'lit-element';
 import { HomeAssistant, LovelaceCardEditor } from 'custom-card-helpers';
-import { LinakDeskCardConfig } from './types';
+import { BekantDeskCardConfig } from './types';
 import { localize } from './localize/localize';
-@customElement('linak-desk-card-editor')
-export class LinakDeskCardEditor extends LitElement implements LovelaceCardEditor {
+@customElement('bekant-desk-card-editor')
+export class BekantDeskCardEditor extends LitElement implements LovelaceCardEditor {
   @property({ attribute: false }) public hass?: HomeAssistant;
-  @internalProperty() private _config!: LinakDeskCardConfig;
+  @internalProperty() private _config!: BekantDeskCardConfig;
   @internalProperty() private _helpers?: any;
   private _initialized = false;
 
-  public setConfig(config: LinakDeskCardConfig): void {
+  public setConfig(config: BekantDeskCardConfig): void {
     this._config = config;
 
     this.loadCardHelpers();
@@ -68,41 +68,11 @@ export class LinakDeskCardEditor extends LitElement implements LovelaceCardEdito
         </div>
         <div class="option">
           <paper-dropdown-menu
-            label=${localize('editor.height_sensor')}
-            @value-changed=${this._valueChanged}
-            .configValue=${'height_sensor'}
-          >
-            <paper-listbox slot="dropdown-content" .selected=${sensors.indexOf(this._config.height_sensor)}>
-              ${sensors.map(entity => {
-                return html`
-                  <paper-item>${entity}</paper-item>
-                `;
-              })}
-            </paper-listbox>
-          </paper-dropdown-menu>
-        </div>
-        <div class="option">
-          <paper-dropdown-menu
             label=${localize('editor.connection_sensor')}
             @value-changed=${this._valueChanged}
             .configValue=${'connection_sensor'}
           >
             <paper-listbox slot="dropdown-content" .selected=${binarySensors.indexOf(this._config.connection_sensor)}>
-              ${binarySensors.map(entity => {
-                return html`
-                  <paper-item>${entity}</paper-item>
-                `;
-              })}
-            </paper-listbox>
-          </paper-dropdown-menu>
-        </div>
-        <div class="option">
-          <paper-dropdown-menu
-            label=${localize('editor.moving_sensor')}
-            @value-changed=${this._valueChanged}
-            .configValue=${'moving_sensor'}
-          >
-            <paper-listbox slot="dropdown-content" .selected=${binarySensors.indexOf(this._config.moving_sensor)}>
               ${binarySensors.map(entity => {
                 return html`
                   <paper-item>${entity}</paper-item>

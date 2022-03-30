@@ -1,7 +1,7 @@
 {
   "common": {
     "version": "Version",
-    "name":"Carte bureau Linak",
+    "name":"Carte bureau Bekant",
     "description": "Carte permettant de contrôler la hauteur du bureau",
     "invalid_configuration": "Configuration invalide",
     "desk_and_height_required": "Le bureau et la hauteur sont requis"

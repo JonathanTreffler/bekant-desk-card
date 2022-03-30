@@ -1,7 +1,7 @@
 {
 	"common": {
 		"version": "Version",
-		"name": "Linak Schreibtisch Karte",
+		"name": "Bekant Schreibtisch Karte",
 		"description": "Kontrolliere die Tischhöhe mit dieser Karte",
 		"invalid_configuration": "Fehlerhafte Konfiguration",
 		"desk_and_height_required": "Tisch- und Höhensensor sind erforderlich",

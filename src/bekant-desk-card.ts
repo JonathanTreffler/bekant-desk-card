@@ -10,7 +10,7 @@ import {
   internalProperty,
 } from 'lit-element';
 import { HomeAssistant, LovelaceCardEditor } from 'custom-card-helpers';
-import type { LinakDeskCardConfig } from './types';
+import type { BekantDeskCardConfig } from './types';
 import { localize } from './localize/localize';
 import { HassEntity } from 'home-assistant-js-websocket';
 import tableBottomImg from './table_bottom.png';
@@ -21,26 +21,22 @@ import './editor';
 window.customCards = window.customCards || [];
 window.customCards.push({
   preview: true,
-  type: 'linak-desk-card',
+  type: 'bekant-desk-card',
   name: localize('common.name'),
   description: localize('common.description'),
 });
 
-@customElement('linak-desk-card')
-export class LinakDeskCard extends LitElement {
+@customElement('bekant-desk-card')
+export class BekantDeskCard extends LitElement {
   public static async getConfigElement(): Promise<LovelaceCardEditor> {
-    return document.createElement('linak-desk-card-editor');
+    return document.createElement('bekant-desk-card-editor');
   }
 
-  public static getStubConfig(_: HomeAssistant, entities: string[]): Partial<LinakDeskCardConfig> {
-      const [desk] = entities.filter((eid) => eid.substr(0, eid.indexOf('.')) === 'cover' && eid.includes('desk'));
-      const [height_sensor] = entities.filter((eid) => eid.substr(0, eid.indexOf('.')) === 'sensor' && eid.includes('desk_height'));
-      const [moving_sensor] = entities.filter((eid) => eid.substr(0, eid.indexOf('.')) === 'binary_sensor' && eid.includes('desk_moving'));
+  public static getStubConfig(_: HomeAssistant, entities: string[]): Partial<BekantDeskCardConfig> {
+      const [desk] = entities.filter((eid) => eid.substr(0, eid.indexOf('.')) === 'number');
       const [connection_sensor] = entities.filter((eid) => eid.substr(0, eid.indexOf('.')) === 'binary_sensor' && eid.includes('desk_connection'));
     return {
       desk,
-      height_sensor,
-      moving_sensor,
       connection_sensor,
       min_height: 62,
       max_height: 127,
@@ -49,10 +45,10 @@ export class LinakDeskCard extends LitElement {
   }
 
   @property({ attribute: false }) public hass!: HomeAssistant;
-  @internalProperty() private config!: LinakDeskCardConfig;
+  @internalProperty() private config!: BekantDeskCardConfig;
 
-  public setConfig(config: LinakDeskCardConfig): void {
-    if (!config.desk || !config.height_sensor) {
+  public setConfig(config: BekantDeskCardConfig): void {
+    if (!config.desk) {
       throw new Error(localize('common.desk_and_height_required'));
     }
 
@@ -68,11 +64,7 @@ export class LinakDeskCard extends LitElement {
   }
 
   get height(): number {
-    return this.relativeHeight + this.config.min_height;
-  }
-
-  get relativeHeight(): number {
-    return parseInt(this.hass.states[this.config.height_sensor]?.state, 10) || 0;
+    return parseInt(this.hass.states[this.config.desk]?.state, 10) || 0;
   }
 
   get connected(): boolean {
@@ -80,10 +72,10 @@ export class LinakDeskCard extends LitElement {
   }
 
   get moving(): boolean {
-    return this.hass.states[this.config.moving_sensor]?.state === 'on';
+    return this.hass.states[this.config.desk]?.last_changed < 5;
   }
   get alpha(): number {
-    return (this.relativeHeight) / (this.config.max_height - this.config.min_height)
+    return this.height / this.config.max_height;
   }
 
   protected shouldUpdate(changedProps: PropertyValues): boolean {
@@ -100,8 +92,6 @@ export class LinakDeskCard extends LitElement {
       return (
         newHass.states[this.config?.desk] !== this.hass?.states[this.config?.desk]
         || newHass.states[this.config?.connection_sensor]?.state !== this.hass?.states[this.config?.connection_sensor]?.state
-        || newHass.states[this.config?.height_sensor]?.state !== this.hass?.states[this.config?.height_sensor]?.state
-        || newHass.states[this.config?.moving_sensor]?.state !== this.hass?.states[this.config?.moving_sensor]?.state
       );
     }
     return true;
@@ -166,28 +156,41 @@ export class LinakDeskCard extends LitElement {
       return;
     }
 
-    const travelDist = this.config.max_height - this.config.min_height;
-    const positionInPercent = Math.round(((target - this.config.min_height) / travelDist) * 100);
-
-    if (Number.isInteger(positionInPercent)) {
-      this.callService('set_cover_position', { position: positionInPercent });
+    if (Number.isInteger(target)) {
+      this.callService('set_value', { value: target });
     }
   }
 
   private goUp(): void {
-    this.callService('open_cover');
+    let lastValue = this.height;
+
+    this.interval = setInterval(() => {
+      lastValue += 2.9;
+
+      this.callService('set_value', {
+        value: lastValue,
+      });
+    }, 1000);
   }
 
   private goDown(): void {
-    this.callService('close_cover');
+    let lastValue = this.height;
+
+    this.interval = setInterval(() => {
+      lastValue -= 2.9;
+
+      this.callService('set_value', {
+        value: lastValue,
+      });
+    }, 1000);
   }
 
   private stop(): void {
-    this.callService('stop_cover');
+    clearTimeout(this.interval);
   }
 
   private callService(service, options = {}): void {
-    this.hass.callService('cover', service, {
+    this.hass.callService('number', service, {
       entity_id: this.config.desk,
       ...options
     });

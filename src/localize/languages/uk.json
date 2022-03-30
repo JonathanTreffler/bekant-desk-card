@@ -1,7 +1,7 @@
 {
   "common": {
     "version": "Версія",
-    "name": "Linak Desk Card",
+    "name": "Bekant Desk Card",
     "description": "Карточка для керування висотою стола",
     "invalid_configuration": "Непоправна конфігурація",
     "desk_and_height_required": "Стіл і датчик висоти є обов’язковими",

@@ -1,7 +1,7 @@
 import { LovelaceCard, LovelaceCardConfig, LovelaceCardEditor } from 'custom-card-helpers';
 declare global {
   interface HTMLElementTagNameMap {
-    'linak-desk-card-editor': LovelaceCardEditor;
+    'bekant-desk-card-editor': LovelaceCardEditor;
     'hui-error-card': LovelaceCard;
   }
   interface Window {
@@ -14,7 +14,7 @@ declare global {
   }
 }
 
-export interface LinakDeskCardConfig extends LovelaceCardConfig {
+export interface BekantDeskCardConfig extends LovelaceCardConfig {
   name?: string;
   desk: string;
   moving_sensor: string;
