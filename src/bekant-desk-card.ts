@@ -71,9 +71,9 @@ export class BekantDeskCard extends LitElement {
     return this.hass.states[this.config.connection_sensor]?.state === 'on';
   }
 
-  get moving(): boolean {
-    return this.hass.states[this.config.desk]?.last_changed < 5;
-  }
+  //get moving(): boolean {
+  //  return this.hass.states[this.config.desk]?.last_changed < 5;
+  //}
   get alpha(): number {
     return this.height / this.config.max_height;
   }
