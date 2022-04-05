@@ -27,6 +27,13 @@ presets:
     target: 76
 ```
 
+Modifications to the default Megadesk Esphome configuration:
+```yaml
+binary_sensor:
+  - platform: status
+    name: "Megadesk ESP32 Status"
+```
+
 ## Options
 
 | Name               | Type    | Requirement  | Description                                 | Default             |
