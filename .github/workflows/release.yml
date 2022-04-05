@@ -14,7 +14,7 @@ jobs:
           node-version: '14.x'
       - name: Build
         run: |
-          cd /home/runner/work/linak-desk-card/linak-desk-card
+          cd /home/runner/work/bekant-desk-card/bekant-desk-card
           yarn install
           yarn build
       - name: Release
