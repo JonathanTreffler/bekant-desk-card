@@ -6,11 +6,6 @@
 
 ![bekant-desk-card_preview](https://user-images.githubusercontent.com/9998984/107797805-a3a6c800-6d5b-11eb-863a-56ae0343995c.png)
 
-## HACS
-
-This card is available in [HACS](https://hacs.xyz/) (Home Assistant Community Store).
-Just search for `Linak Desk Card` in plugins tab.
-
 ## Config
 
 ```yaml
